@@ -1,0 +1,43 @@
+<!-- Shibboleth SP configuration skeleton.
+     Replace entityID and IdP references with your own values.
+     Do NOT commit real keys/certificates - mount them as secrets. -->
+<SPConfig xmlns="urn:mace:shibboleth:3.0:native:sp:config"
+    xmlns:conf="urn:mace:shibboleth:3.0:native:sp:config"
+    clockSkew="180">
+
+    <ApplicationDefaults entityID="https://sp.example.org/shibboleth"
+        REMOTE_USER="eppn persistent-id targeted-id"
+        cipherSuites="DEFAULT:!EXP:!LOW:!aNULL:!eNULL:!DES:!IDEA:!SEED:!RC4:!3DES:!kRSA:!SSLv2:!SSLv3:!TLSv1:!TLSv1.1">
+
+        <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
+                  checkAddress="false" handlerSSL="true" cookieProps="https">
+            <!-- Your Identity Provider entityID -->
+            <SSO entityID="https://idp.example.org/idp/shibboleth">
+                SAML2
+            </SSO>
+            <Logout>SAML2 Local</Logout>
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+            <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+        </Sessions>
+
+        <Errors supportContact="root@localhost" helpLocation="/about.html"/>
+
+        <!-- IdP metadata source -->
+        <MetadataProvider type="XML"
+            url="https://idp.example.org/idp/shibboleth"
+            backingFilePath="idp-metadata.xml" maxRefreshDelay="7200"/>
+
+        <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
+        <!-- SP keys/certs - generate with shib-keygen, mount at runtime -->
+        <CredentialResolver type="File" use="signing"
+            key="sp-signing-key.pem" certificate="sp-signing-cert.pem"/>
+        <CredentialResolver type="File" use="encryption"
+            key="sp-encrypt-key.pem" certificate="sp-encrypt-cert.pem"/>
+    </ApplicationDefaults>
+
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+</SPConfig>

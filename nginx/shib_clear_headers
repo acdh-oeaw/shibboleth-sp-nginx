@@ -1,0 +1,3 @@
+# Clear incoming headers that could be spoofed by clients.
+# Only the Shibboleth authorizer is allowed to set these.
+more_clear_input_headers 'displayName' 'mail' 'persistent-id' 'eppn' 'affiliation' 'entitlement' 'remote-user' 'shib-*';
