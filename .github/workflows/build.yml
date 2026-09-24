@@ -29,9 +29,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/build-push-action@v6
+      - name: Build and push image
+        uses: docker/build-push-action@v6
         with:
           context: .
+          file: ./Dockerfile
           push: true
           no-cache: true
           build-args: |
@@ -40,3 +42,9 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ env.NGINX_VERSION }}
+            ghcr.io/${{ github.repository }}:build-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Show image to deploy
+        run: |
+          echo 'Deploy this exact image in Rancher:' >> "$GITHUB_STEP_SUMMARY"
+          echo 'ghcr.io/${{ github.repository }}:build-${{ github.run_id }}-${{ github.run_attempt }}' >> "$GITHUB_STEP_SUMMARY"
