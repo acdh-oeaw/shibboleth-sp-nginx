@@ -2,7 +2,7 @@ name: Build and push
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   schedule:
     # Weekly rebuild picks up new Debian base, Shibboleth SP and module updates
     - cron: "0 4 * * 1"
