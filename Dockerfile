@@ -71,6 +71,8 @@ COPY nginx/nginx.conf            /etc/nginx/nginx.conf
 COPY nginx/conf.d/               /etc/nginx/conf.d/
 COPY nginx/shib_clear_headers    /etc/nginx/shib_clear_headers
 COPY nginx/shib_fastcgi_params   /etc/nginx/shib_fastcgi_params
+COPY --chmod=0644 nginx/cert.pem /etc/nginx/cert.pem
+COPY --chmod=0600 nginx/key.pem  /etc/nginx/key.pem
 COPY shibboleth/                 /etc/shibboleth/
 COPY supervisord.conf            /etc/supervisor/conf.d/supervisord.conf
 
