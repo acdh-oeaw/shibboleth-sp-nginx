@@ -82,5 +82,10 @@ RUN mkdir -p /run/shibboleth /var/log/shibboleth /var/log/supervisor \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
+# Compatibility with vhosts that still use the old FastCGI socket paths
+RUN mkdir -p /opt/shibboleth \
+    && ln -s /run/shibboleth/shibauthorizer.sock /opt/shibboleth/shibauthorizer.sock \
+    && ln -s /run/shibboleth/shibresponder.sock /opt/shibboleth/shibresponder.sock
+
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
