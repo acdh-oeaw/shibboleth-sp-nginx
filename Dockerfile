@@ -48,7 +48,7 @@ ARG NGINX_VERSION
 ARG DEBIAN_VERSION
 
 LABEL org.opencontainers.image.description="nginx + Shibboleth SP (FastCGI) on Debian" \
-      org.opencontainers.image.source="https://github.com/YOUR-ORG/shibboleth-sp-nginx"
+      org.opencontainers.image.source="https://github.com/acdh-oeaw/shibboleth-sp-nginx"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates curl gnupg2 supervisor \
